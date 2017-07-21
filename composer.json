@@ -1,0 +1,16 @@
+{
+    "name": "akishkin/simple-logger",
+    "version": "1.0",
+    "description": "Simple Logger with email an stdout support",
+    "keywords": ["logging"],
+    "require": {
+        "php": ">=5.3"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrey Kishkin",
+            "email": "andrey.kishkin@gmail.com"
+        }
+    ],
+}
