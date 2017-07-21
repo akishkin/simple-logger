@@ -4,6 +4,7 @@ Logger Class, has ability to email alerts and/or echo them to stdout, for email 
 
 Common use:
 
+```php
 <?php
 require_once('./SimpleLogger.php');
 
@@ -15,3 +16,4 @@ $logger->log('test');
 $logger->log('test crit', LOG_CRIT);
 $logger->log('test debug', LOG_DEBUG);
 ?>
+```
