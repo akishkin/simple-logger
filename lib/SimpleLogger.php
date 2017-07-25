@@ -1,6 +1,6 @@
 <?php
 
-namespace akishkin\SimpleLogger;
+namespace akishkin;
 
 class SimpleLogger {
     private $filename;
