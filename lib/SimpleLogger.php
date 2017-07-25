@@ -1,5 +1,7 @@
 <?php
 
+namespace akishkin\SimpleLogger;
+
 class SimpleLogger {
     private $filename;
     private $min_loglevel;
