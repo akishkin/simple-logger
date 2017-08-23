@@ -95,6 +95,39 @@ class SimpleLogger {
 
             $this->stdoutMsg($message, $loglevel);
     }
+
+    public function debug($message) {
+        $this->log($message, LOG_DEBUG);
+    }
+
+    public function info($message) {
+        $this->log($message, LOG_INFO);
+    }
+
+    public function notice($message) {
+        $this->log($message, LOG_NOTICE);
+    }
+
+    public function warning($message) {
+        $this->log($message, LOG_WARNING);
+    }
+
+    public function error($message) {
+        $this->log($message, LOG_ERR);
+    }
+
+    public function critical($message) {
+        $this->log($message, LOG_CRIT);
+    }
+
+    public function alert($message) {
+        $this->log($message, LOG_ALERT);
+    }
+
+    public function emergency($message) {
+        $this->log($message, LOG_EMERG);
+    }
+
 }
 
 ?>
