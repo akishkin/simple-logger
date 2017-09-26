@@ -24,6 +24,8 @@ class SimpleLogger {
         LOG_EMERG => 'EMERG'
     );
 
+    private $process_ids;
+
     public function __construct($filename, $min_loglevel = LOG_INFO) {
         $this->filename = $filename;
         $this->min_loglevel = $min_loglevel;
@@ -35,6 +37,18 @@ class SimpleLogger {
         $this->min_email_loglevel = NULL;
 
         $this->min_stdout_loglevel = NULL;
+
+        $this->process_ids = array();
+    }
+
+    public function addProcessId($process_id) {
+        $this->process_ids[] = $process_id;
+    }
+
+    public function removeProcessId($process_id) {
+        if (($key = array_search($process_id, $this->process_ids)) !== false) {
+            unset($this->process_ids[$key]);
+        }
     }
 
     public function setDateFormat($date_fmt) {
@@ -51,10 +65,22 @@ class SimpleLogger {
         $this->min_stdout_loglevel = $min_loglevel;
     }
 
+    private function formatMsg($message, $loglevel) {
+        $date = date($this->date_fmt);
+        $msg = "[$date] " . $this->log_msg[$loglevel] . ' ';
+
+        # add process ids
+        foreach ($this->process_ids as $process_id) {
+            $msg .= "[$process_id] ";
+        }
+        $msg .= "$message" . PHP_EOL;
+
+        return $msg;
+    }
+
     private function writeMsg($message, $loglevel) {
         if ($loglevel <= $this->min_loglevel) {
-            $date = date($this->date_fmt);
-            $msg = "[$date] " . $this->log_msg[$loglevel] . " $message" . PHP_EOL;
+            $msg = $this->formatMsg($message, $loglevel);
 
             return file_put_contents($this->filename, $msg, FILE_APPEND);
         } else {
@@ -64,7 +90,8 @@ class SimpleLogger {
 
     private function emailMsg($message, $loglevel) {
         if (!is_null($this->email) && $loglevel <= $this->min_email_loglevel) {
-            return mail($this->email, $this->log_msg[$loglevel] . " - $this->app_name", $message);
+            $msg = $this->formatMsg($message, $loglevel);
+            return mail($this->email, $this->log_msg[$loglevel] . " - $this->app_name", $msg);
         } else {
             return 0;
         }
@@ -72,8 +99,7 @@ class SimpleLogger {
 
     private function stdoutMsg($message, $loglevel) {
         if (!is_null($this->min_stdout_loglevel) && $loglevel <= $this->min_stdout_loglevel) {
-            $date = date($this->date_fmt);
-            $msg = "[$date] " . $this->log_msg[$loglevel] . " $message" . PHP_EOL;
+            $msg = $this->formatMsg($message, $loglevel);
 
             echo $msg;
         }
