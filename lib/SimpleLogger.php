@@ -82,7 +82,7 @@ class SimpleLogger {
         if ($loglevel <= $this->min_loglevel) {
             $msg = $this->formatMsg($message, $loglevel);
 
-            return file_put_contents($this->filename, $msg, FILE_APPEND);
+            return file_put_contents($this->filename, $msg, FILE_APPEND | LOCK_EX);
         } else {
             return 0;
         }
